@@ -120,7 +120,12 @@ int main()
 
 		// --------------------------------------------------------------------------------------------
 		
-		String^ sqlInsertString = "INSERT INTO Teilnehmer(Id,Vorname, Nachname, Standort) VALUES (50, 'Klaus', 'Blub', 'Dorf')";
+		String^ vorname = "";
+		Console::WriteLine("Bitte geben Sie einen Vornamen ein");
+		vorname = Console::ReadLine();
+
+
+		String^ sqlInsertString = "INSERT INTO Teilnehmer(Id,Vorname, Nachname, Standort) VALUES (50,'" + vorname + "', 'Blub', 'Dorf')";
 
 		SqlCommand^ sqlInsertCommand = gcnew SqlCommand(sqlInsertString, connection);
 

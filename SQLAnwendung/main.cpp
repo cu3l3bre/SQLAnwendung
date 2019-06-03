@@ -12,9 +12,19 @@ int main()
 	// Verbindung zur Datenbank herstellen
 
 
-	// Verbindungs Zeichenfolge - connectionString
-	String^ connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Alfa\\source\\repos\\SQLAnwendung\\SQLAnwendung\\Datenbank.mdf;Integrated Security=True;Connect Timeout=30";
-	
+	// Verbindungs Zeichenfolge - connectionString (auf die backslashes achten \\)
+//	String^ connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Alfa\\source\\repos\\SQLAnwendung\\SQLAnwendung\\Datenbank.mdf;Integrated Security=True;Connect Timeout=30";
+
+
+	// der aktuelle Pfad:
+	// - beim starten aus dem Programm heraus (Debug), wäre das der pfad wo die main liegt
+	// - wenn ich die exe benutze, den pfad der exe, dh, ich muss die datenbank dateien vorher dahin kopieren, wo die exe liegt
+	String^ filePath = System::IO::Directory::GetCurrentDirectory();
+
+
+	String^ connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + filePath + "\\Datenbank.mdf;Integrated Security=True;Connect Timeout=30";
+
+	Console::WriteLine(filePath);
 
 	// Verbindung vorbereiten
 	SqlConnection^ connection = gcnew SqlConnection();
@@ -67,7 +77,7 @@ int main()
 		// SQL Befehlskategorie B - Befehle, bei denen kein Ergebnis zurückgeliefert wird
 
 		// 1. SQL Befehl -  aktualisiere Teilnehmer 1
-		String^ sqlUpdateString = "UPDATE Teilnehmer SET Standort = 'Egger' WHERE Id = 1";
+		String^ sqlUpdateString = "UPDATE Teilnehmer SET Standort = 'Osna' WHERE Id = 1";
 
 		// 2. Objket anlegen
 		SqlCommand^ sqlUpdateCommand = gcnew SqlCommand(sqlUpdateString, connection);
@@ -77,7 +87,7 @@ int main()
 
 		// --------------------------------------------------------------------------------------------
 
-		String^ sqlDeleteString2 = "DELETE FROM Teilnehmer WHERE Vorname = 'Patrick'";
+		String^ sqlDeleteString2 = "DELETE FROM Teilnehmer WHERE Id = 50";
 
 		SqlCommand^ sqlDeleteCommand2 = gcnew SqlCommand(sqlDeleteString2, connection);
 
@@ -97,7 +107,7 @@ int main()
 		while(dataReader->Read())
 		{
 			Console::Write(dataReader["Id"]);
-			Console::Write(", ");
+			Console::Write(": ");
 			Console::Write(dataReader["Nachname"]);
 			Console::Write(", ");
 			Console::Write(dataReader["Vorname"]);
@@ -108,6 +118,22 @@ int main()
 		// Verbindung des Datenreaders zur Datenbank trennen
 		dataReader->Close();
 
+		// --------------------------------------------------------------------------------------------
+		
+		String^ sqlInsertString = "INSERT INTO Teilnehmer(Id,Vorname, Nachname, Standort) VALUES (50, 'Klaus', 'Blub', 'Dorf')";
+
+		SqlCommand^ sqlInsertCommand = gcnew SqlCommand(sqlInsertString, connection);
+
+		try {
+			sqlInsertCommand->ExecuteNonQuery();
+		}
+		catch (Exception^ ausnahme3)
+		{
+			Console::WriteLine(ausnahme3);
+		}
+
+		// --------------------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------------------
 
 	}
 	catch (Exception^ ausnahme)

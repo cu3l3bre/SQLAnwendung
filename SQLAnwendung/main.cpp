@@ -12,7 +12,6 @@ int main()
 	// Verbindung zur Datenbank herstellen
 
 
-
 	// Verbindungs Zeichenfolge - connectionString
 	String^ connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\Alfa\\source\\repos\\SQLAnwendung\\SQLAnwendung\\Datenbank.mdf;Integrated Security=True;Connect Timeout=30";
 	
@@ -36,6 +35,8 @@ int main()
 		connection->Open();
 		Console::WriteLine("Verbindung erfolgreich hergstellt");
 
+		// --------------------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------------------
 		// SQL Befehlskategorie A - mit genau einem Ergebnis als Rückgabe
 
 		// 1. SQL-Befehlszeichenfolge angeben - Anzahl der Teilnehmer
@@ -61,6 +62,51 @@ int main()
 		String^ Nachname = sqlCommand2->ExecuteScalar()->ToString();
 		Console::WriteLine("Nachname von Daniel ist " + Nachname);
 
+		// --------------------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------------------
+		// SQL Befehlskategorie B - Befehle, bei denen kein Ergebnis zurückgeliefert wird
+
+		// 1. SQL Befehl -  aktualisiere Teilnehmer 1
+		String^ sqlUpdateString = "UPDATE Teilnehmer SET Standort = 'Egger' WHERE Id = 1";
+
+		// 2. Objket anlegen
+		SqlCommand^ sqlUpdateCommand = gcnew SqlCommand(sqlUpdateString, connection);
+
+		// 3. Befehlsobjekt absenden / Befehl ausführen
+		sqlUpdateCommand->ExecuteNonQuery();
+
+		// --------------------------------------------------------------------------------------------
+
+		String^ sqlDeleteString2 = "DELETE FROM Teilnehmer WHERE Vorname = 'Patrick'";
+
+		SqlCommand^ sqlDeleteCommand2 = gcnew SqlCommand(sqlDeleteString2, connection);
+
+		sqlDeleteCommand2->ExecuteNonQuery();
+
+		// --------------------------------------------------------------------------------------------
+		// --------------------------------------------------------------------------------------------
+		// SQL Befehlskategorie C - Befehle mit vielen Ergebnissen / Rückgabewerten
+
+		String^ sqlSelectString = "SELECT * FROM Teilnehmer";
+
+		SqlCommand^ sqlSelectCommand = gcnew SqlCommand(sqlSelectString, connection);
+
+		SqlDataReader^ dataReader = sqlSelectCommand->ExecuteReader();
+
+		// Werte der einzelnen Spalten anzeigen
+		while(dataReader->Read())
+		{
+			Console::Write(dataReader["Id"]);
+			Console::Write(", ");
+			Console::Write(dataReader["Nachname"]);
+			Console::Write(", ");
+			Console::Write(dataReader["Vorname"]);
+			Console::Write(", ");
+			Console::WriteLine(dataReader["Standort"]);
+		}
+
+		// Verbindung des Datenreaders zur Datenbank trennen
+		dataReader->Close();
 
 
 	}
@@ -74,7 +120,5 @@ int main()
 
 	Console::WriteLine("Zum Beenden eine beliebige Taste drücken");
 	Console::ReadKey();
-
-	
 	return 0;
 }

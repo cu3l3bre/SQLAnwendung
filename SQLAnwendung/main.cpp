@@ -1,4 +1,6 @@
 #include <iostream>
+#include "Hauptfenster.h"
+
 
 using namespace System;
 using namespace System::Data;
@@ -7,7 +9,16 @@ using namespace System::Data::SqlClient;
 
 int main()
 {
-	Console::WriteLine("Programm zu SQLAnwendung" + Environment::NewLine);
+
+	// Objekt der Klasse Hauptfenster anlegen und im Anschluss ausführen
+	SQLAnwendung::Hauptfenster^ fenster1 = gcnew SQLAnwendung::Hauptfenster;
+	System::Windows::Forms::Application::Run(fenster1);
+
+
+
+
+
+	/*Console::WriteLine("Programm zu SQLAnwendung" + Environment::NewLine);*/
 
 	// Verbindung zur Datenbank herstellen
 
@@ -19,14 +30,17 @@ int main()
 	// der aktuelle Pfad:
 	// - beim starten aus dem Programm heraus (Debug), wäre das der pfad wo die main liegt
 	// - wenn ich die exe benutze, den pfad der exe, dh, ich muss die datenbank dateien vorher dahin kopieren, wo die exe liegt
+	
+	
+	/*
 	String^ filePath = System::IO::Directory::GetCurrentDirectory();
-
-
 	String^ connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + filePath + "\\Datenbank.mdf;Integrated Security=True;Connect Timeout=30";
-
 	Console::WriteLine(filePath);
+	*/
 
 	// Verbindung vorbereiten
+
+	/*
 	SqlConnection^ connection = gcnew SqlConnection();
 	
 	try
@@ -37,8 +51,10 @@ int main()
 	{
 		Console::WriteLine("Verbindung konnte nicht hergestellt werden, falsche Syntax beim Verbindungsstring?");
 	}
-
+	*/
 	
+
+	/*
 	try
 	{
 		// Verbindung herstellen
@@ -87,7 +103,7 @@ int main()
 
 		// --------------------------------------------------------------------------------------------
 
-		String^ sqlDeleteString2 = "DELETE FROM Teilnehmer WHERE Id = 50";
+		String^ sqlDeleteString2 = "DELETE FROM Teilnehmer WHERE Id = 100";
 
 		SqlCommand^ sqlDeleteCommand2 = gcnew SqlCommand(sqlDeleteString2, connection);
 
@@ -125,7 +141,7 @@ int main()
 		vorname = Console::ReadLine();
 
 
-		String^ sqlInsertString = "INSERT INTO Teilnehmer(Id,Vorname, Nachname, Standort) VALUES (50,'" + vorname + "', 'Blub', 'Dorf')";
+		String^ sqlInsertString = "INSERT INTO Teilnehmer(Id,Vorname, Nachname, Standort) VALUES (100,'" + vorname + "', 'Mustermann', 'Musterdorf')";
 
 		SqlCommand^ sqlInsertCommand = gcnew SqlCommand(sqlInsertString, connection);
 
@@ -145,11 +161,13 @@ int main()
 	{
 		Console::WriteLine("Verbindung konnte nicht hergestellt werden, falscher Pfad?");
 	}
-
+	
 	// Verbindung wieder schliessen
 	connection->Close();
 
 	Console::WriteLine("Zum Beenden eine beliebige Taste drücken");
 	Console::ReadKey();
+	*/
+	
 	return 0;
 }

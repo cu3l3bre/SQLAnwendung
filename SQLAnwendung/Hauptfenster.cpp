@@ -1,7 +1,6 @@
 #include "Hauptfenster.h"
 
 
-
 System::Void SQLAnwendung::Hauptfenster::button_DatenAnzeigen_Click(System::Object^  sender, System::EventArgs^  e)
 {
 	try
@@ -22,10 +21,15 @@ System::Void SQLAnwendung::Hauptfenster::button_DatenAnzeigen_Click(System::Obje
 
 		int i = 0;
 
+		// bei jedem knopfdruck werden, labels erzeugt und überlagert an den vorherigen
+		// so kann es schnell zu 1000 ... labels kommen und das programm verlangsamen
+		// deswegen einmal clearen
+		panel_Ausgabe->Controls->Clear();
+
+
 		// Werte der einzelnen Spalten anzeigen
 		while (dataReader->Read())
 		{
-
 			textBox_Ausgabe->Text += dataReader["Id"] + ": ";
 
 			Label^ label_Id = gcnew Label;
@@ -58,6 +62,7 @@ System::Void SQLAnwendung::Hauptfenster::button_DatenAnzeigen_Click(System::Obje
 			panel_Ausgabe->Controls->Add(label_Nachname);	// in das Panel einfügen
 					
 
+
 			textBox_Ausgabe->Text += dataReader["Standort"] + Environment::NewLine;
 		
 			Label^ label_Standort = gcnew Label;
@@ -87,7 +92,6 @@ System::Void SQLAnwendung::Hauptfenster::button_DatenAnzeigen_Click(System::Obje
 	{
 		Console::WriteLine("Verbindung zur Datenbank konnte nicht geschlossen werden");
 	}
-
 }
 
 
@@ -98,7 +102,7 @@ System::Void SQLAnwendung::Hauptfenster::button_TeilnehmerHinzufuegen_Click(Syst
 	String^ nachname = textBox_Nachname->Text;
 	String^ vorname = textBox_Vorname->Text;
 	String^ standort = textBox_Standort->Text;
-	bool idExestiert = false;
+	bool idExistiert = false;
 
 	try
 	{
@@ -107,7 +111,6 @@ System::Void SQLAnwendung::Hauptfenster::button_TeilnehmerHinzufuegen_Click(Syst
 
 		if ((id != "") && (nachname != "") && (vorname != "") && (standort != ""))
 		{
-			
 			String^ sqlString = "SELECT * FROM TEILNEHMER";
 
 			// 2. sql Befehlsobjekt anlegen
@@ -121,13 +124,13 @@ System::Void SQLAnwendung::Hauptfenster::button_TeilnehmerHinzufuegen_Click(Syst
 			{
 				if (id == dataReader["Id"]->ToString())
 				{
-					idExestiert = true;
+					idExistiert = true;
 				}
 			}
 			dataReader->Close();
 
 			//idexestiert = false;
-			if (!idExestiert)
+			if (!idExistiert)
 			{
 				// 1. Sql String anlegen
 				String^ sqlString2 = "INSERT INTO Teilnehmer(Id,Vorname, Nachname, Standort) VALUES (" + id + ",' " + vorname + "', '" + nachname + "', '" + standort + "')";
@@ -169,9 +172,4 @@ System::Void SQLAnwendung::Hauptfenster::button_TeilnehmerHinzufuegen_Click(Syst
 
 	// Ausgabe Liste einmal refreshen
 	button_DatenAnzeigen->PerformClick();
-
-
-
-
-
 }

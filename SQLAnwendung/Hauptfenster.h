@@ -220,7 +220,7 @@ namespace SQLAnwendung {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ActiveCaption;
-			this->ClientSize = System::Drawing::Size(1109, 642);
+			this->ClientSize = System::Drawing::Size(695, 642);
 			this->Controls->Add(this->panel_Ausgabe);
 			this->Controls->Add(this->button_TeilnehmerHinzufuegen);
 			this->Controls->Add(this->label_Standort);
